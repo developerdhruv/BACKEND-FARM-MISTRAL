@@ -29,3 +29,11 @@ async def answer(query: str = Query(..., description="Text prompt for music gene
     else:
         # If an error occurs, return an HTTP 500 error
         raise HTTPException(status_code=500)
+
+@app.get("/translate")
+async def translate(text: str = Query(..., description="Text to translate"), target_lang: str = "ur"):
+    if text:
+        translated = translator.translate(text, dest=target_lang)
+        return {"translated_text": translated.text}
+    else:
+        raise HTTPException(status_code=400, detail="Text to translate cannot be empty")
